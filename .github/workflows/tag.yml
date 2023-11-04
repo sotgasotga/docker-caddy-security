@@ -23,8 +23,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: build the image
-        run: |
-          docker buildx build --push \
-          --tag sotgasotga/caddy-security-cf:${GITHUB_REF/refs\/tags\//} \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 .
+      - name: Build container and Push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64, linux/arm64, linux/arm/v8, linux/arm/v7
+          push: true
+          tags: ghcr.io/sotgasotga/caddy-security:latest
